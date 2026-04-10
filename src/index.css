@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --color-on-secondary: #1a1a1a;
+  --color-on-secondary-container: #1a1a1a;
+  --color-primary-fixed: #ffcc00;
+  --color-on-surface: #1a1a1a;
+  --color-on-secondary-fixed-variant: #1a1a1a;
+  --color-surface-container: #eee9e0;
+  --color-inverse-primary: #f5f0e8;
+  --color-surface-container-highest: #e2ddd4;
+  --color-primary-container: #ffcc00;
+  --color-error: #cc0000;
+  --color-background: #f5f0e8;
+  --color-tertiary-fixed: #d6e3ff;
+  --color-tertiary-container: #d6e3ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-inverse-surface: #1a1a1a;
+  --color-secondary-fixed-dim: #ffb3ab;
+  --color-inverse-on-surface: #f5f0e8;
+  --color-surface-container-high: #e8e3da;
+  --color-surface-dim: #d6d1c9;
+  --color-on-primary-fixed: #1a1a1a;
+  --color-outline: #1a1a1a;
+  --color-on-tertiary-fixed: #1a1a1a;
+  --color-tertiary: #0055ff;
+  --color-on-tertiary: #ffffff;
+  --color-secondary-fixed: #ffdad6;
+  --color-on-tertiary-container: #1a1a1a;
+  --color-on-error-container: #93000a;
+  --color-surface-tint: #1a1a1a;
+  --color-secondary-container: #ffdad6;
+  --color-on-tertiary-fixed-variant: #1a1a1a;
+  --color-on-secondary-fixed: #1a1a1a;
+  --color-on-error: #ffffff;
+  --color-primary-fixed-dim: #e6b800;
+  --color-surface-variant: #e8e3da;
+  --color-surface-container-low: #f2ede5;
+  --color-on-primary-container: #1a1a1a;
+  --color-tertiary-fixed-dim: #a8c6ff;
+  --color-secondary: #e63b2e;
+  --color-primary: #1a1a1a;
+  --color-on-background: #1a1a1a;
+  --color-on-surface-variant: #4a4a4a;
+  --color-on-primary-fixed-variant: #1a1a1a;
+  --color-surface-bright: #faf7f2;
+  --color-outline-variant: #d0cbc3;
+  --color-on-primary: #ffffff;
+  --color-surface: #f5f0e8;
+  --color-error-container: #ffdad6;
+
+  --font-headline: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Space Grotesk", sans-serif;
+
+  --radius-default: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 9999px;
+}
+
+@utility neo-shadow {
+  box-shadow: 4px 4px 0px 0px #1a1a1a;
+}
+
+@utility active-nav {
+  text-decoration-line: underline;
+  text-decoration-thickness: 4px;
+  text-underline-offset: 8px;
+  color: var(--color-primary-container);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-primary font-body;
+  }
+  h1, h2, h3, .nav-link {
+    @apply font-headline;
+  }
+}
