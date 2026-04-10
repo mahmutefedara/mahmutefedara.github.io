@@ -1,6 +1,6 @@
-import { useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Terminal, ArrowUpRight, Code2, Mail, GitBranch, Briefcase, ExternalLink, Cloud, Brain, Sigma } from 'lucide-react';
+import { useRef, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Terminal, ArrowUpRight, Code2, Mail, GitBranch, Briefcase, ExternalLink, Cloud, Brain, Sigma, Menu, X } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -441,13 +441,14 @@ const PixelGarden = () => {
       ref={canvasRef}
       width={500}
       height={200}
-      className="absolute pointer-events-none"
-      style={{ top: '100%', left: -80, imageRendering: 'pixelated' }}
+      className="pointer-events-none"
+      style={{ imageRendering: 'pixelated' }}
     />
   );
 };
 
 const App = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -458,6 +459,8 @@ const App = () => {
       }
     }
   };
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <div className="bg-background text-primary selection:bg-primary-container selection:text-on-primary-container min-h-screen overflow-x-hidden">
@@ -470,6 +473,8 @@ const App = () => {
         <div className="text-2xl font-black tracking-tighter uppercase font-headline">
           EFE DARA
         </div>
+        
+        {/* Desktop Nav */}
         <nav className="hidden md:flex gap-8 items-center">
           {['about', 'projects', 'contact'].map((item) => (
             <a
@@ -481,7 +486,8 @@ const App = () => {
             </a>
           ))}
         </nav>
-        <div className="flex items-center">
+
+        <div className="flex items-center gap-2">
           <motion.a
             href="https://github.com/mahmutefedara"
             target="_blank"
@@ -491,8 +497,40 @@ const App = () => {
           >
             <Terminal size={24} />
           </motion.a>
+          
+          {/* Mobile Menu Toggle */}
+          <button 
+            onClick={toggleMenu}
+            className="md:hidden p-2 hover:bg-primary hover:text-background transition-colors cursor-pointer"
+          >
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
       </motion.header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 bg-background z-40 md:hidden flex flex-col items-center justify-center gap-8 pt-20"
+          >
+            {['about', 'projects', 'contact'].map((item) => (
+              <a
+                key={item}
+                href={`#${item}`}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-4xl font-black uppercase tracking-tighter font-headline hover:bg-primary hover:text-white transition-colors px-4 py-2"
+              >
+                {item}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="max-w-6xl mx-auto px-6">
         {/* Hero Section */}
@@ -517,12 +555,12 @@ const App = () => {
                   </motion.h1>
                 </div>
 
-                <div className="relative relative">
+                <div className="relative">
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4, duration: 0.8 }}
-                    className="w-full max-w-[400px] aspect-square md:w-[450px] md:h-[450px] shrink-0 relative z-10"
+                    className="w-full max-w-[400px] aspect-square md:w-[450px] md:h-[450px] shrink-0 relative z-10 mx-auto"
                   >
                     <img
                       src="/efe.jpg"
@@ -531,18 +569,20 @@ const App = () => {
                     />
                   </motion.div>
                   {/* Pixel Bahçe */}
-                  <PixelGarden />
+                  <div className="hidden sm:block overflow-visible absolute -bottom-48 -left-4 md:-left-20 lg:-left-24">
+                    <PixelGarden />
+                  </div>
                 </div>
               </div>
 
-              {/* Alta Düşen Hover Sosyal Linkler */}
-              <div className="relative h-12">
+              {/* Alta Düşen Hover Sosyal Linkler - Mobil İçin Her Zaman Görünür */}
+              <div className="relative min-h-[48px] md:h-12 mt-4">
                 <div className="flex items-center gap-2 cursor-pointer text-primary font-black uppercase tracking-widest text-sm mb-4">
                   <span className="bg-primary text-white px-2 py-1">Links</span>
                   <span className="animate-bounce">↓</span>
                 </div>
 
-                <div className="absolute top-8 left-0 flex flex-col md:flex-row gap-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-2 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 ease-out z-20">
+                <div className="md:absolute md:top-8 md:left-0 flex flex-wrap gap-4 opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-y-2 pointer-events-auto md:pointer-events-none md:group-hover:pointer-events-auto transition-all duration-300 ease-out z-20">
                   {[
                     { icon: <GitBranch size={18} />, label: "Github", url: "https://github.com/mahmutefedara" },
                     { icon: <Briefcase size={18} />, label: "LinkedIn", url: "https://www.linkedin.com/in/mahmutefedara/" },
@@ -646,10 +686,10 @@ const App = () => {
               <motion.div
                 key={idx}
                 whileHover={{ backgroundColor: '#ffcc00' }}
-                className="bg-background p-8 aspect-square flex flex-col justify-between transition-colors"
+                className="bg-background p-4 md:p-8 aspect-square flex flex-col justify-between transition-colors"
               >
-                <div className="text-primary w-10 h-10">{item.icon}</div>
-                <h4 className="text-xl font-black uppercase tracking-tighter font-headline">{item.title}</h4>
+                <div className="text-primary w-8 h-8 md:w-10 md:h-10">{item.icon}</div>
+                <h4 className="text-lg md:text-xl font-black uppercase tracking-tighter font-headline">{item.title}</h4>
               </motion.div>
             ))}
           </div>
@@ -660,18 +700,18 @@ const App = () => {
           <motion.div
             whileInView={{ scale: [0.95, 1], opacity: [0, 1] }}
             viewport={{ once: true }}
-            className="bg-secondary p-12 neo-shadow"
+            className="bg-secondary p-8 md:p-12 neo-shadow"
           >
-            <h2 className="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mb-8 font-headline">Ready to_build?</h2>
-            <p className="text-white text-xl md:text-2xl font-medium mb-12 max-w-xl">
+            <h2 className="text-4xl md:text-8xl font-black uppercase tracking-tighter text-white mb-8 font-headline">Ready to_build?</h2>
+            <p className="text-white text-lg md:text-2xl font-medium mb-12 max-w-xl">
               I am currently open to high-impact collaborations and technical leadership roles.
             </p>
             <a
               href="mailto:mahmutefedara@leenar.net"
-              className="inline-flex items-center gap-4 text-3xl md:text-5xl font-black uppercase tracking-tighter text-white hover:text-primary-fixed transition-colors underline decoration-8 underline-offset-8 font-headline"
+              className="inline-flex flex-wrap items-center gap-4 text-xl sm:text-3xl md:text-5xl font-black uppercase tracking-tighter text-white hover:text-primary-fixed transition-colors underline decoration-4 md:decoration-8 underline-offset-8 font-headline break-all"
             >
               mahmutefedara@leenar.net
-              <Mail className="w-10 h-10 md:w-16 md:h-16" />
+              <Mail className="w-6 h-6 sm:w-10 sm:h-10 md:w-16 md:h-16" />
             </a>
           </motion.div>
         </section>
